@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -22,14 +21,12 @@ public class Prefs extends PreferenceActivity implements
 	private static final String OPT_HINTS = "Hints";
 	private static final boolean OPT_HINTS_DEF = true;
 	
-	//private final String OPT_MUSIC_SEL = getResources().getString(R.string.preference_music_select);
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_prefs);
 		addPreferencesFromResource(R.layout.activity_prefs);
-
+		
 		setUpActionBar();
 	}
 
@@ -75,12 +72,11 @@ public class Prefs extends PreferenceActivity implements
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		/*
-		if (key.equals(OPT_MUSIC_SEL)) {
+		if (key.equals(getResources().getString(R.string.preference_music_select))) {
 			Preference connectionPref = findPreference(key);
 			// Set summary to be the user-description for the selected value
 			connectionPref.setSummary(sharedPreferences.getString(key, ""));
-		}*/
+		}
 	}
 
 }

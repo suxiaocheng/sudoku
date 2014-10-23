@@ -28,7 +28,7 @@
     <string name="background_music_type_dialog">setting music location</string>
     <string name="background_music_title">Music Location Selection</string>
     
-    <string name="preference_music_select">/sdcard</string>
+    <string name="preference_music_select">Select Music to play</string>
     <string name="preference_music_select_title">File</string>
     <string name="preference_music_select_summary">Please choose the background music</string>
     

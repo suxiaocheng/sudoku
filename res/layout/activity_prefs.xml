@@ -23,7 +23,6 @@
 
         <Preference
             android:dependency="@string/music_title"
-            android:id="@+id/preference_music_select_summary"
             android:key="@string/preference_music_select"
             android:summary="@string/preference_music_select_summary"
             android:title="@string/preference_music_select" >
