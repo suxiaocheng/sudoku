@@ -19,10 +19,23 @@
     <string name="settings_label">Settings…</string>
     <string name="settings_title">Sudoku settings</string>
     <string name="settings_shortcut">s</string>
+    
+    <string name="preference_music_setting">Music</string>
     <string name="music_title">Music</string>
     <string name="music_summary">Play background music</string>
+    
+    <string name="background_music_type_default">internel</string>
+    <string name="background_music_type_dialog">setting music location</string>
+    <string name="background_music_title">Music Location Selection</string>
+    
+    <string name="preference_music_select">/sdcard</string>
+    <string name="preference_music_select_title">File</string>
+    <string name="preference_music_select_summary">Please choose the background music</string>
+    
+    <string name="preference_other_setting">Other</string>
     <string name="hints_title">Hints</string>
     <string name="hints_summary">Show hints during play</string>
+    
     <string name="title_activity_prefs">Prefs</string>
     <string name="new_game_title">Difficulty</string>
     <string name="easy_label">Easy</string>
@@ -31,5 +44,5 @@
     <string name="title_activity_game">Game</string>
     <string name="no_moves_label">No moves</string>
     <string name="keypad_title">Keypad</string>
-
+    
 </resources>

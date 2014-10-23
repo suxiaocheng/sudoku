@@ -19,8 +19,8 @@ public class PuzzleView extends View {
 
 	private float width; // width of one tile
 	private float height; // height of one tile
-	private int selX; // X index of selection
-	private int selY; // Y index of selection
+	private int selX = -1; // X index of selection
+	private int selY = -1; // Y index of selection
 	private final Rect selRect = new Rect();
 
 	private static final String SELX = "SELX";
@@ -34,7 +34,25 @@ public class PuzzleView extends View {
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 
+		updateFirstSelectValue();
+
 		setId(ID);
+	}
+
+	public void updateFirstSelectValue() {
+		updateFirstSelectValueCheck:
+		/* Check selx or sely is the valid value */
+		if (((selX < 0) || (selX > 8)) || ((selY < 0) || (selY > 8))) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					if (this.game.getTileStatus(i, j) == false) {
+						selX = i;
+						selY = j;
+						break updateFirstSelectValueCheck;
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -88,6 +106,7 @@ public class PuzzleView extends View {
 					hilite);
 		}
 
+		/* Draw the const area with the gray background */
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if (this.game.getTileStatus(i, j) == true) {
@@ -195,8 +214,13 @@ public class PuzzleView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return super.onTouchEvent(event);
-		select((int) (event.getX() / width), (int) (event.getY() / height));
-		if (game.getTileStatus(selX, selY) == false) {
+		int x, y;
+		x = (int) (event.getX() / width);
+		x = Math.min(Math.max(x, 0), 8);
+		y = (int) (event.getY() / height);
+		y = Math.min(Math.max(y, 0), 8);
+		if (game.getTileStatus(x, y) == false) {
+			select(x, y);
 			game.showKeypadOrError(selX, selY);
 		}
 		Log.d(TAG, "onTouchEvent: x " + selX + ", y " + selY);

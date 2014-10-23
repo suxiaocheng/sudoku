@@ -3,19 +3,26 @@ package com.example.sodukov;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Prefs extends PreferenceActivity {
+public class Prefs extends PreferenceActivity implements
+		OnSharedPreferenceChangeListener {
 	// Option names and default values
-	private static final String OPT_MUSIC = "Play background music";
-	private static final boolean OPT_MUSIC_DEF = false;
+	private static final String OPT_MUSIC = "Play_background_music";
+	private static final boolean OPT_MUSIC_DEF = true;
 	private static final String OPT_HINTS = "Hints";
 	private static final boolean OPT_HINTS_DEF = true;
+	
+	//private final String OPT_MUSIC_SEL = getResources().getString(R.string.preference_music_select);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +46,9 @@ public class Prefs extends PreferenceActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+		/*
+		 * if (id == R.id.action_settings) { return true; }
+		 */
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -65,4 +72,15 @@ public class Prefs extends PreferenceActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 	}
+
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		/*
+		if (key.equals(OPT_MUSIC_SEL)) {
+			Preference connectionPref = findPreference(key);
+			// Set summary to be the user-description for the selected value
+			connectionPref.setSummary(sharedPreferences.getString(key, ""));
+		}*/
+	}
+
 }

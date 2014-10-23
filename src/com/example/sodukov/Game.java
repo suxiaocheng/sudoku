@@ -3,6 +3,7 @@ package com.example.sodukov;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -63,6 +64,7 @@ public class Game extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			startActivity(new Intent(this, Prefs.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

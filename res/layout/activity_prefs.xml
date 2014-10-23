@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="music"
-        android:summary="@string/music_summary"
-        android:title="@string/music_title" />
+    <PreferenceCategory
+        android:key="preference_music_setting"
+        android:title="@string/preference_music_setting" >
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="hints"
-        android:summary="@string/hints_summary"
-        android:title="@string/hints_title" />
+        <CheckBoxPreference
+            android:id="@+id/Play_background_music"
+            android:defaultValue="false"
+            android:key="@string/music_title"
+            android:summary="@string/music_summary"
+            android:title="@string/music_title" />
+
+        <ListPreference
+            android:defaultValue="@string/background_music_type_default"
+            android:dependency="@string/music_title"
+            android:dialogTitle="@string/background_music_type_dialog"
+            android:entries="@array/pref_background_music_entries"
+            android:entryValues="@array/background_music_values"
+            android:key="pref_syncConnectionType"
+            android:title="@string/background_music_title" />
+
+        <Preference
+            android:dependency="@string/music_title"
+            android:id="@+id/preference_music_select_summary"
+            android:key="@string/preference_music_select"
+            android:summary="@string/preference_music_select_summary"
+            android:title="@string/preference_music_select" >
+
+            <intent
+                android:action="android.intent.action.GET_CONTENT"
+                android:mimeType="*/*" />
+        </Preference>
+
+        <!--
+        <EditTextPreference
+            android:defaultValue="@string/preference_music_select"
+            android:key="preference_music_select"
+            android:summary="@string/preference_music_select_summary"
+            android:title="@string/preference_music_select_title" />        -->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="preference_other_setting"
+        android:title="@string/preference_other_setting" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="Hints"
+            android:summary="@string/hints_summary"
+            android:title="@string/hints_title" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -7,4 +7,13 @@
         <item>@string/hard_label</item>
     </array>
 
+    <string-array name="pref_background_music_entries">
+        <item name="internel">internel</item>
+        <item name="sd card">sd card</item>
+    </string-array>
+    <string-array name="background_music_values">
+        <item name="internel">0</item>
+        <item name="sd card">1</item>
+    </string-array>
+
 </resources>
