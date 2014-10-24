@@ -48,6 +48,8 @@ public class Game extends ActionBarActivity {
 		puzzleView.requestFocus();
 
 		setUpActionBar();
+		
+		Prefs.dumpinfo(TAG, this);
 	}
 
 	@Override
@@ -222,8 +224,14 @@ public class Game extends ActionBarActivity {
 	 */
 	@Override
 	protected void onResume() {
+		String str;
 		super.onResume();
-		Music.play(this, R.raw.main);
+		str = Prefs.getMusicType(this);
+		if(str.equals("0")){
+			Music.play(this, R.raw.main);
+		}else if(str.equals("1")){
+			Music.play(this, Prefs.getMusicName(this));
+		}
 	}
 
 	@Override

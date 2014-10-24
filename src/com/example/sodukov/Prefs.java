@@ -66,17 +66,17 @@ public class Prefs extends PreferenceActivity implements
 
 		MusicTypePref.setDefaultValue(PreferenceManager
 				.getDefaultSharedPreferences(this).getString(OPT_MUSIC_TYPE,
-						"internel"));
+						"0"));
 
 		selectMusicStr = PreferenceManager.getDefaultSharedPreferences(this)
 				.getString(OPT_MUSIC_NAME, null);
 
-		if (checkMusicValid(selectMusicStr) == false) {
+		if (checkMusicValid(selectMusicStr, this) == false) {
 			selectMusicStr = null;
 			MusicTypePref.setValueIndex(0);
 		} else {
 			MusicNamePref.setDefaultValue(selectMusicStr);
-			MusicTypePref.setValueIndex(1);
+			// MusicTypePref.setValueIndex(1);
 		}
 
 		HintsOnPref.setDefaultValue(PreferenceManager
@@ -135,13 +135,14 @@ public class Prefs extends PreferenceActivity implements
 				.getBoolean(OPT_HINTS, OPT_HINTS_DEF);
 	}
 
-	public static int getMusicType(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getInt(
-				OPT_MUSIC_TYPE, 0);
+	public static String getMusicType(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString(OPT_MUSIC_TYPE, "0");
 	}
 
 	public static String getMusicName(Context context) {
-		return selectMusicStr;
+		return PreferenceManager.getDefaultSharedPreferences(context)
+				.getString(OPT_MUSIC_NAME, null);
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -197,7 +198,7 @@ public class Prefs extends PreferenceActivity implements
 					}
 				}
 
-				if (checkMusicValid(selectMusicStr) == false) {
+				if (checkMusicValid(selectMusicStr, this) == false) {
 					selectMusicStr = null;
 					MusicTypePref.setValueIndex(0);
 				} else {
@@ -212,7 +213,7 @@ public class Prefs extends PreferenceActivity implements
 
 	}
 
-	private boolean checkMusicValid(String name) {
+	private static boolean checkMusicValid(String name, Context context) {
 		boolean valid;
 		if (name == null)
 			return false;
@@ -220,13 +221,43 @@ public class Prefs extends PreferenceActivity implements
 
 		valid = music_file.isFile();
 		if (valid == false) {
-			Toast.makeText(this, "file didn't exist\n" + name,
+			Toast.makeText(context, "file didn't exist\n" + name,
 					Toast.LENGTH_SHORT).show();
 		} else {
-			Toast.makeText(this, "file valid\n" + name, Toast.LENGTH_LONG)
+			Toast.makeText(context, "file valid\n" + name, Toast.LENGTH_LONG)
 					.show();
 		}
 
 		return valid;
+	}
+
+	public static boolean dumpinfo(String tag, Context context) {
+		Log.d(tag, "Enable:" + getMusic(context));
+		Log.d(tag, "Type:" + getMusicType(context));
+		Log.d(tag, "Name:" + getMusicName(context));
+		Log.d(tag, "Hints:" + getHints(context));
+		return true;
+	}
+
+	public static boolean updatePreferenceValue(Context context) {
+		String str;
+
+		PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+				OPT_HINTS, OPT_HINTS_DEF);
+
+		str = PreferenceManager.getDefaultSharedPreferences(context).getString(
+				OPT_MUSIC_NAME, null);
+
+		if (checkMusicValid(str, context) == false) {
+			str = null;
+			
+		}else{
+			PreferenceManager.getDefaultSharedPreferences(context).getString(
+					OPT_MUSIC_TYPE, "0");
+		}
+
+		PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+				OPT_HINTS, OPT_HINTS_DEF);
+		return true;
 	}
 }
