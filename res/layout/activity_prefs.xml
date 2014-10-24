@@ -18,8 +18,8 @@
             android:dialogTitle="@string/background_music_type_dialog"
             android:entries="@array/pref_background_music_entries"
             android:entryValues="@array/background_music_values"
-            android:key="pref_syncConnectionType"
-            android:title="@string/background_music_title" />
+            android:key="@string/background_music_type_title"
+            android:title="@string/background_music_type_title" />
 
         <Preference
             android:dependency="@string/music_title"
@@ -46,7 +46,7 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="Hints"
+            android:key="@string/hints_title"
             android:summary="@string/hints_summary"
             android:title="@string/hints_title" />
     </PreferenceCategory>
