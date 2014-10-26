@@ -36,7 +36,9 @@ public class Game extends ActionBarActivity {
 
 	private static final String PREF_PUZZLE = "puzzle";
 	protected static final int DIFFICULTY_CONTINUE = -1;
-	
+
+	private Music music_play_ctrl;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,8 +50,10 @@ public class Game extends ActionBarActivity {
 		puzzleView.requestFocus();
 
 		setUpActionBar();
-		
-		Prefs.dumpinfo(TAG, this);
+
+		music_play_ctrl = new Music();
+
+		Prefs.dumpinfo(TAG, this, this);
 	}
 
 	@Override
@@ -192,7 +196,7 @@ public class Game extends ActionBarActivity {
 		int[] puz = new int[string.length()];
 		for (int i = 0; i < puz.length; i++) {
 			puz[i] = string.charAt(i) - '0';
-			if(puz[i] != 0){
+			if (puz[i] != 0) {
 				puzzleStatus[i] |= 0x01;
 			}
 		}
@@ -202,7 +206,7 @@ public class Game extends ActionBarActivity {
 	private int getTile(int x, int y) {
 		return puzzle[y * 9 + x];
 	}
-	
+
 	public boolean getTileStatus(int x, int y) {
 		return puzzleStatus[y * 9 + x] == 0x1;
 	}
@@ -226,11 +230,13 @@ public class Game extends ActionBarActivity {
 	protected void onResume() {
 		String str;
 		super.onResume();
-		str = Prefs.getMusicType(this);
-		if(str.equals("0")){
-			Music.play(this, R.raw.main);
-		}else if(str.equals("1")){
-			Music.play(this, Prefs.getMusicName(this));
+		if (Prefs.getMusic(getApplicationContext())) {
+			str = Prefs.getMusicType(this);
+			if (str.equals("0")) {
+				music_play_ctrl.play(this, R.raw.main);
+			} else if (str.equals("1")) {
+				music_play_ctrl.play(this, Prefs.getMusicName(this, this));
+			}
 		}
 	}
 
@@ -238,7 +244,7 @@ public class Game extends ActionBarActivity {
 	protected void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause");
-		Music.stop(this);
+		music_play_ctrl.stop(this);
 		// Save the current puzzle
 		getPreferences(MODE_PRIVATE).edit()
 				.putString(PREF_PUZZLE, toPuzzleString(puzzle)).commit();

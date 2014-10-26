@@ -29,8 +29,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		View exitButton = findViewById(R.id.exit_button);
 		exitButton.setOnClickListener(this);
 		
-		Prefs.updatePreferenceValue(this);
-		Prefs.dumpinfo(TAG, this);
+		Prefs.updatePreferenceValue(this, this);
+		Prefs.dumpinfo(TAG, this, this);
 	}
 
 	@Override
@@ -39,12 +39,18 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		Prefs.dumpinfo(TAG, this, this);
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			startActivity(new Intent(this, Prefs.class));
+			startActivity(new Intent(this, Prefs.class));			
 			return true;
 			// More items go here (if any) ...
 		case R.id.new_button:

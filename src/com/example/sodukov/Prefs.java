@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,13 +27,13 @@ public class Prefs extends PreferenceActivity implements
 
 	private static final String TAG = "Prefs";
 	// Option names and default values
-	private static final String OPT_MUSIC = "Play_background_music";
+	private static final String OPT_MUSIC = "Music";
 	private static final boolean OPT_MUSIC_DEF = true;
 	private static final String OPT_HINTS = "Hints";
 	private static final boolean OPT_HINTS_DEF = true;
 
 	private static final String OPT_MUSIC_TYPE = "Music Location Selection";
-	private static final String OPT_MUSIC_NAME = "Select Music to play";
+	private static final String OPT_MUSIC_NAME_DIR = "Select Music to play";
 
 	private static final int CHOOSE_FILE = 0xff;
 	private static String selectMusicStr;
@@ -68,15 +69,18 @@ public class Prefs extends PreferenceActivity implements
 				.getDefaultSharedPreferences(this).getString(OPT_MUSIC_TYPE,
 						"0"));
 
-		selectMusicStr = PreferenceManager.getDefaultSharedPreferences(this)
-				.getString(OPT_MUSIC_NAME, null);
-
+		selectMusicStr = getMusicName(this, this);
+		
 		if (checkMusicValid(selectMusicStr, this) == false) {
 			selectMusicStr = null;
+			/* save the file str into share preference */
+			SharedPreferences sharedPref = this.getSharedPreferences(TAG
+					+ ".bak", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putString(OPT_MUSIC_NAME_DIR, selectMusicStr);
+			editor.commit();
+			
 			MusicTypePref.setValueIndex(0);
-		} else {
-			MusicNamePref.setDefaultValue(selectMusicStr);
-			// MusicTypePref.setValueIndex(1);
 		}
 
 		HintsOnPref.setDefaultValue(PreferenceManager
@@ -140,9 +144,16 @@ public class Prefs extends PreferenceActivity implements
 				.getString(OPT_MUSIC_TYPE, "0");
 	}
 
-	public static String getMusicName(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getString(OPT_MUSIC_NAME, null);
+	public static String getMusicName(Context context, Activity activity) {
+		/*
+		 * return PreferenceManager.getDefaultSharedPreferences(context)
+		 * .getString(OPT_MUSIC_NAME_DIR, null);
+		 */
+		SharedPreferences sharedPref = activity.getSharedPreferences(TAG
+				+ ".bak", Context.MODE_PRIVATE);
+		String str = sharedPref.getString(OPT_MUSIC_NAME_DIR, null);
+
+		return str;
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -202,9 +213,16 @@ public class Prefs extends PreferenceActivity implements
 					selectMusicStr = null;
 					MusicTypePref.setValueIndex(0);
 				} else {
-					MusicNamePref.setDefaultValue(selectMusicStr);
+					// MusicNamePref.setDefaultValue(selectMusicStr);
 					MusicTypePref.setValueIndex(1);
 				}
+
+				/* save the file str into share preference */
+				SharedPreferences sharedPref = getSharedPreferences(TAG
+						+ ".bak", Context.MODE_PRIVATE);
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putString(OPT_MUSIC_NAME_DIR, selectMusicStr);
+				editor.commit();
 
 				Log.d(TAG, "select music:" + selectMusicStr);
 			}
@@ -231,33 +249,42 @@ public class Prefs extends PreferenceActivity implements
 		return valid;
 	}
 
-	public static boolean dumpinfo(String tag, Context context) {
+	@Override
+	public void onStop() {
+		super.onStop();
+		Log.d(TAG, "onStop method call");
+		Prefs.dumpinfo(TAG, this, this);
+	}
+
+	public static boolean dumpinfo(String tag, Context context,
+			Activity activity) {
 		Log.d(tag, "Enable:" + getMusic(context));
 		Log.d(tag, "Type:" + getMusicType(context));
-		Log.d(tag, "Name:" + getMusicName(context));
+		Log.d(tag, "Name:" + getMusicName(context, activity));
 		Log.d(tag, "Hints:" + getHints(context));
 		return true;
 	}
 
-	public static boolean updatePreferenceValue(Context context) {
+	public static boolean updatePreferenceValue(Context context,
+			Activity activity) {
 		String str;
 
-		PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-				OPT_HINTS, OPT_HINTS_DEF);
-
-		str = PreferenceManager.getDefaultSharedPreferences(context).getString(
-				OPT_MUSIC_NAME, null);
+		str = getMusicName(context, activity);
 
 		if (checkMusicValid(str, context) == false) {
 			str = null;
-			
-		}else{
+		} else {
 			PreferenceManager.getDefaultSharedPreferences(context).getString(
 					OPT_MUSIC_TYPE, "0");
 		}
 
-		PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
-				OPT_HINTS, OPT_HINTS_DEF);
+		/* save the file str into share preference */
+		SharedPreferences sharedPref = activity.getSharedPreferences(TAG
+				+ ".bak", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString(OPT_MUSIC_NAME_DIR, str);
+		editor.commit();
+
 		return true;
 	}
 }
